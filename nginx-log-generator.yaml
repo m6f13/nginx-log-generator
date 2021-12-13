@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-log-generator
+spec:
+  selector:
+    matchLabels:
+      app: nginx-log-generator
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: nginx-log-generator
+        log-label: "true"
+    spec:
+      containers:
+        - name: nginx-log-generator
+          image: m6f13/nginx-log-generator:nginx-logger-1.0 
