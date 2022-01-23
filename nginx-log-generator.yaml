@@ -15,4 +15,4 @@ spec:
     spec:
       containers:
         - name: nginx-log-generator
-          image: m6f13/nginx-log-generator:nginx-logger-1.0 
+          image: m6f13/nginx-log-generator:nginx-logger-1.1 

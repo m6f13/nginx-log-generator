@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"strings"
-	"time"
-
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/caarlos0/env/v6"
+	"strconv"
+	"strings"
+	"time"
 )
 
 type config struct {
@@ -50,8 +50,28 @@ func main() {
 		bodyBytesSent = realisticBytesSent(statusCode)
 		userAgent = gofakeit.UserAgent()
 
-		fmt.Printf("%s - - [%s] \"%s %s %s\" %v %v \"%s\" \"%s\"\n", ip, timeLocal.Format("02/Jan/2006:15:04:05 -0700"), httpMethod, path, httpVersion, statusCode, bodyBytesSent, referrer, userAgent)
+		outputMessage := "{" +
+			`"` + "timestamp" + `"` + ":" + " " + `"` + timeLocal.Format("02/Jan/2006:15:04:05 -0700") + `"` + ", " +
+			`"` + "message" + `"` + ":" + " " + `"` + "Test placeholder for the message text" + `"` + ", " +
+			`"` + "tags" + `"` + ":" + " " + `"` + "[nginx_access]" + `"` + ", " +
+			`"` + "remote_addr" + `"` + ":" + " " + `"` + "10.1.1.2" + `"` + ", " +
+			`"` + "forwarded_for" + `"` + ":" + " " + `"` + ip + `"` + ", " +
+			`"` + "remote_user" + `"` + ":" + " " + `"` + "-" + `"` + ", " +
+			`"` + "contenttype" + `"` + ":" + " " + `"` + "appliaction/octet-stream" + `"` + ", " +
+			`"` + "bytes" + `"` + ":" + " " + `"` + strconv.Itoa(bodyBytesSent) + `"` + ", " +
+			`"` + "duration" + `"` + ":" + " " + `"` + "0.000" + `"` + ", " +
+			`"` + "status" + `"` + ":" + " " + `"` + strconv.Itoa(statusCode) + `"` + ", " +
+			`"` + "request" + `"` + ":" + " " + `"` + httpVersion + `"` + ", " +
+			`"` + "method" + `"` + ":" + " " + `"` + httpMethod + `"` + ", " +
+			`"` + "referrer" + `"` + ":" + " " + `"` + referrer + `"` + ", " +
+			`"` + "useragent" + `"` + ":" + " " + `"` + userAgent + `"` + ", " +
+			`"` + "path" + `"` + ":" + " " + `"` + path + `"` +
+			"}"
+
+		fmt.Printf("%s\n", outputMessage)
+
 	}
+
 }
 
 func realisticBytesSent(statusCode int) int {
